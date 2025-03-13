@@ -1,0 +1,4 @@
+@app.route('/leer_sql', methods=['GET'])
+def leer_sql():
+    usuarios = Usuario.query.all()
+    return jsonify([{"id": u.id, "nombre": u.nombre, "edad": u.edad} for u in usuarios])
