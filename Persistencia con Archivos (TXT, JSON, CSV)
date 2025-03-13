@@ -1,0 +1,24 @@
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+TXT_FILE = "datos/datos.txt"
+
+@app.route('/guardar_txt', methods=['POST'])
+def guardar_txt():
+    datos = request.form.get('datos', '')
+    with open(TXT_FILE, 'a') as f:
+        f.write(datos + '\n')
+    return "Datos guardados en TXT."
+
+@app.route('/leer_txt', methods=['GET'])
+def leer_txt():
+    try:
+        with open(TXT_FILE, 'r') as f:
+            contenido = f.readlines()
+        return jsonify({"contenido": contenido})
+    except FileNotFoundError:
+        return jsonify({"error": "Archivo no encontrado"}), 404
+
+if __name__ == '__main__':
+    app.run(debug=True)
