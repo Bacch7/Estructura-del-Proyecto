@@ -1,0 +1,14 @@
+from flask_sqlalchemy import SQLAlchemy
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/usuarios.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+class Usuario(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(80), nullable=False)
+    edad = db.Column(db.Integer, nullable=False)
+
+# Crear la base de datos antes de correr la app
+with app.app_context():
+    db.create_all()
