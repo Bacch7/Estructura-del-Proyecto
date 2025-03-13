@@ -1,0 +1,24 @@
+import csv
+
+CSV_FILE = "datos/datos.csv"
+
+@app.route('/guardar_csv', methods=['POST'])
+def guardar_csv():
+    nombre = request.form.get('nombre', '')
+    edad = request.form.get('edad', '')
+
+    with open(CSV_FILE, 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([nombre, edad])
+
+    return "Datos guardados en CSV."
+
+@app.route('/leer_csv', methods=['GET'])
+def leer_csv():
+    try:
+        with open(CSV_FILE, 'r') as f:
+            reader = csv.reader(f)
+            datos = [row for row in reader]
+        return jsonify(datos)
+    except FileNotFoundError:
+        return jsonify([])
