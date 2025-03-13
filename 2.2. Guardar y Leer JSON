@@ -1,0 +1,29 @@
+import json
+
+JSON_FILE = "datos/datos.json"
+
+@app.route('/guardar_json', methods=['POST'])
+def guardar_json():
+    nuevo_dato = request.json  
+    try:
+        with open(JSON_FILE, 'r') as f:
+            datos = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        datos = []
+
+    datos.append(nuevo_dato)
+
+    with open(JSON_FILE, 'w') as f:
+        json.dump(datos, f, indent=4)
+
+    return "Datos guardados en JSON."
+
+@app.route('/leer_json', methods=['GET'])
+def leer_json():
+    try:
+        with open(JSON_FILE, 'r') as f:
+            datos = json.load(f)
+        return jsonify(datos)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return jsonify([])
+
