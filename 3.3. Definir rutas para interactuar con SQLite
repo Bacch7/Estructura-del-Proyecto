@@ -1,0 +1,10 @@
+@app.route('/guardar_sql', methods=['POST'])
+def guardar_sql():
+    nombre = request.form.get('nombre', '')
+    edad = request.form.get('edad', '')
+
+    nuevo_usuario = Usuario(nombre=nombre, edad=int(edad))
+    db.session.add(nuevo_usuario)
+    db.session.commit()
+
+    return "Usuario guardado en SQLite."
